@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 12:21:23 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/11 20:49:41 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/13 22:24:14 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,13 @@
 # define FILLIT_H
 
 # include "libft/libft.h"
-# define BUFF_SIZE 20
+# define BUFF_SIZE 21
 
-//int		fillit(const int fd, char **line);
+typedef struct		s_tet
+{
+	char			**figure;
+	char			letter;
+	struct s_tet	*next;
+}					t_tet;
 
 #endif
