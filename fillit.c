@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 11:08:47 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/19 20:55:14 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/20 22:19:58 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char	**create_map(int len)
 	int		heigh, wide;
 
 	heigh = len;
-	if (!(map = ft_stranew(heigh/* + 1*/)))
+	if (!(map = ft_stranew(heigh)))
 		return (0);
 	x = 0;
 	while (heigh--)
@@ -146,17 +146,6 @@ char	**create_map(int len)
 		map[x][y] = '\0';
 		++x;
 	}
-/*	wide = len;
-	if (!(map[x] = ft_strnew(wide)))
-		return (0);
-	y = 0;
-	while (wide--)
-	{
-		map[x][y] = '\0';
-		++y;
-	}
-	map[x][y] = '\0';
-	++x;*/
 	map[x] = NULL;
 	return (map);
 }
@@ -184,8 +173,6 @@ int		fillity(char **map, char **figure, int x, int y, int i, int j)
 		}	
 		return (1);
 	}
-//	else if (map[x][y] == '2')
-		
 	else 
 		return (0);
 }
@@ -270,8 +257,6 @@ int		explore_map(t_tet *beg, int i, int j, char **map)
 	return (0);
 }
 
-//UNIFY MERGE AND EXPLORE
-
 int		find_hash(t_tet *beg, char **map)
 {
 	t_tet	*trav;
@@ -286,7 +271,7 @@ int		find_hash(t_tet *beg, char **map)
 		j = 0;
 		while (trav->figure[i][j])
 		{
-			if (trav->figure[i][j] != '.') ////////
+			if (trav->figure[i][j] != '.')
 			{
 				if (explore_map(trav, i, j, map))
 					return (1);
@@ -300,76 +285,6 @@ int		find_hash(t_tet *beg, char **map)
 	return (0);	
 }
 
-/*
-int		max_wide(char **map)	
-{
-	int		wide;
-	int		x;
-	int		y;
-
-	wide = 0;
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == '-')
-			{
-				if (y > wide)
-					wide = y;
-				break ;
-			}
-			++y;
-		}
-		++x;
-
-	}
-	return (wide);
-}*/
-/*		
-int		max_heigh(char **map)	
-{
-	int		heigh;
-	int		x;
-	int		y;
-
-	heigh = 0;
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] != '-')
-			{
-				if (x > heigh)
-					heigh = x;
-				break ;
-			}
-			++y;
-		}
-		++x;
-	}
-	return (++heigh);
-}*/
-/*
-t_tet	*twist_lasts(t_tet *beg)
-{
-	t_tet	*trav;
-	t_tet	*prev;
-
-	trav = beg;
-	prev = beg->next;
-	while (trav->next)
-		trav = trav->next;
-	beg->next = trav;
-	trav->next = prev;
-	prev->next = NULL;
-	return (beg);
-}
-*/
-
 void	print_map(char **map)	
 {
 	int		x;
@@ -377,40 +292,65 @@ void	print_map(char **map)
 	x = 0;
 	while (map[x])
 	{
-//		printf("%s\n", map[x]);
 		ft_putendl(map[x]);
 		++x;
 	}
 	printf("%s\n", map[x]);
 }
 
-t_tet	*sorting_list(t_tet *beg/*, int fac*/)
+t_tet	*sorting_list(t_tet *beg, int perm, int pz)
 {
 	t_tet	*trav;
 	t_tet	*prev;
 	t_tet	*aprev;
-	int		len;
-	int		ite;
+	int		first;
 
 	trav = beg;
-	while (trav->next)
-		trav = trav->next;
-	len = trav->letter - 64;
-	ite = len;
-	if (len > 2)
-	{
-		aprev = beg;
-		while (ite - 3)
+	first = 1;
+	while (perm--)
+	{	
+		if (trav->next)
 		{
-			aprev = aprev->next;
-			--ite;
+			trav = trav->next;	
+			first = 0;
 		}
-		prev = aprev->next;
-		aprev->next = trav;
-		trav->next = prev;
-		prev->next = NULL;
-	}		
+		else
+		{
+			trav = beg;
+			first = 1;
+		}
+	}
+	if (first)
+	{
+		if (trav->letter == 'A')
+			return (beg);
+		else // go to the last
+		{
+			while (trav->next)
+				trav = trav->next;
+		}
+	}
+	if (pz == 2)    // change for previous
+	{
+		prev = trav;
+		trav->next = beg;
+		beg->next = NULL;
+		beg = trav;
+		return (trav);
+	}
 	return (beg);
+}
+
+int		factorial(int pz)
+{
+	int		perm;
+	int		c;
+
+	perm = 1;
+	c = 1;
+	while ( c <= pz)
+		perm = perm * c++;
+	return perm;
 }
 
 int		main(int argc, char **argv)
@@ -425,14 +365,14 @@ int		main(int argc, char **argv)
 	char		**map;
 	int			size;
 	int			find;
-//	int			fac;
+	int			perm;										
 
 	if (argc != 2)
 	{
 		write(1, "usage\n", 6);
 		return (-1);
 	}
-	fd = open(argv[1], O_RDONLY, 0);
+	fd = open(argv[1], O_RDONLY, 0);	
 	ret = BUFF_SIZE;
 	pz = 0;
 	while (ret == BUFF_SIZE)
@@ -450,16 +390,17 @@ int		main(int argc, char **argv)
 		else
 			beg = new;
 	}
-	print_list(beg);
 	find = 0;
-	size = 4;
-//	fac = 1;
+	size = 2;
 	while (!find)
 	{
+		perm = factorial(pz);				
 		map = create_map(size);
-		while (/*sort_options &&*/ find == 0)
+		while (perm && find == 0)			
 		{
-			trav = sorting_list(beg/*, fac++*/);
+			
+			beg = sorting_list(beg, perm, pz);
+			trav = beg;
 			while (trav)
 			{
 				if (!(find_hash(trav, map)))
@@ -471,44 +412,16 @@ int		main(int argc, char **argv)
 					find = 1;
 				trav = trav->next;
 			}
-			if (find == 0)
+			if (find == 0)					
 				restore_map_total(map);
-		}
+			--perm;
+		}			
 		if (find == 0)
 		{
 			free(map);
 			++size;
 		}
 	}
-/*	find = 0;	BACKUP START
-	size = 2;
-	while (!find)
-	{
-		map = create_map(size);*/
-//		while (sort_options && find == 0)
-//		{
-//			trav = sorting_list(beg);*/
-/*			trav = beg;
-			while (trav)
-			{
-				if (!(find_hash(trav, map)))
-				{
-					find = 0;
-					break ;
-				}
-				else
-					find = 1;
-				trav = trav->next;
-			}*/
-//			if (find == 0)
-//				restore_map_total;
-//		}
-/*		if (find == 0)
-		{
-			free(map);
-			++size;
-		}
-	}		BACK UP END*/
 	print_map(map);
 	return (0);
 }
