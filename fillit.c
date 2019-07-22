@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 11:08:47 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/20 22:19:58 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/21 22:46:04 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,41 +303,55 @@ t_tet	*sorting_list(t_tet *beg, int perm, int pz)
 	t_tet	*trav;
 	t_tet	*prev;
 	t_tet	*aprev;
-	int		first;
+	int		len;
+	int		i;
 
-	trav = beg;
-	first = 1;
-	while (perm--)
-	{	
-		if (trav->next)
-		{
-			trav = trav->next;	
-			first = 0;
-		}
-		else
-		{
-			trav = beg;
-			first = 1;
-		}
-	}
-	if (first)
+	i = perm;
+	while (i >= pz)
+		i -= pz;
+	printf("%d\n", i); 
+	if (i == 0 && beg->letter == 'A')
+		return (beg);
+	if ((i == 0 && beg->letter != 'A' && pz == 2) || (i == 1 && pz == 2))
 	{
-		if (trav->letter == 'A')
-			return (beg);
-		else // go to the last
-		{
-			while (trav->next)
-				trav = trav->next;
-		}
-	}
-	if (pz == 2)    // change for previous
-	{
-		prev = trav;
+		trav = beg->next;
 		trav->next = beg;
 		beg->next = NULL;
 		beg = trav;
-		return (trav);
 	}
+	if (i == 0 && pz > 2)
+	{
+		len = pz - 2;
+		trav = beg;
+		prev = beg;
+		while (len--)
+			prev = prev->next;
+		beg = prev->next;
+		prev->next = trav;
+		beg->next = trav->next;
+		trav->next = NULL;
+	}
+	if (i == 1 && pz > 2)
+	{
+		trav = beg;
+		beg = beg->next;
+		trav->next = beg->next;
+		beg->next = trav;
+	}
+	if (i > 1 && pz > 2)
+	{
+		len = i - 2;
+		aprev = beg;
+		while (len--)
+			aprev = aprev->next;
+		prev = aprev->next;
+		trav = prev->next;
+
+		prev->next = trav->next;
+		trav->next = prev;
+		aprev->next = trav;
+	}
+//	print_list(beg);
 	return (beg);
 }
 
@@ -398,7 +412,6 @@ int		main(int argc, char **argv)
 		map = create_map(size);
 		while (perm && find == 0)			
 		{
-			
 			beg = sorting_list(beg, perm, pz);
 			trav = beg;
 			while (trav)
