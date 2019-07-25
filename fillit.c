@@ -6,13 +6,53 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 11:08:47 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/24 20:21:39 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/24 22:01:48 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include <fcntl.h>
 #include <stdio.h>
+
+////////////////////////////////    borrar   /////////////////////////////////////
+
+void	print_list(t_tet *beg)
+{
+	t_tet	*trav;
+	int		i;
+
+	trav = beg;
+	while (trav)
+	{
+		i = 0;
+		while (trav->figure[i])
+		{
+			printf("%s\n", trav->figure[i]);
+			++i;
+		}
+		if (trav->next != NULL)
+		printf("\n");
+		trav = trav->next;
+	}
+}
+
+////////////////////////////////    borrar   /////////////////////////////////////
+
+void	print_list_line(t_tet *beg)
+{
+	t_tet	*trav;
+	trav = beg;
+	while (trav)
+	{
+		printf("%c\t", trav->letter);
+		trav = trav->next;
+	}
+	printf("\n");
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
 int		invalid(char *s, int ret)
 {	
@@ -50,6 +90,10 @@ int		invalid(char *s, int ret)
 		return (0);
 	return (1);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
 t_tet	*create_obj(char *buf, int pz)
 {
@@ -92,6 +136,10 @@ t_tet	*create_obj(char *buf, int pz)
 	return (obj);
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
 t_tet	*add_obj(t_tet *beg, t_tet *new)
 {
 	t_tet	*trav;
@@ -103,37 +151,9 @@ t_tet	*add_obj(t_tet *beg, t_tet *new)
 	return (beg);
 }
 
-void	print_list(t_tet *beg)
-{
-	t_tet	*trav;
-	int		i;
-
-	trav = beg;
-	while (trav)
-	{
-		i = 0;
-		while (trav->figure[i])
-		{
-			printf("%s\n", trav->figure[i]);
-			++i;
-		}
-		if (trav->next != NULL)
-		printf("\n");
-		trav = trav->next;
-	}
-}
-
-void	print_list_line(t_tet *beg)
-{
-	t_tet	*trav;
-	trav = beg;
-	while (trav)
-	{
-		printf("%c\t", trav->letter);
-		trav = trav->next;
-	}
-	printf("\n");
-}
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
 char	**create_map(int len)
 {
@@ -153,7 +173,7 @@ char	**create_map(int len)
 		y = 0;
 		while (wide--)
 		{
-			map[x][y] = '-';
+			map[x][y] = '.';
 			++y;
 		}
 		map[x][y] = '\0';
@@ -163,65 +183,10 @@ char	**create_map(int len)
 	return (map);
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
-
-int		count_assigns(char **map, char c)
-{
-	int		count;
-	int		x;
-	int		y;
-
-	x = 0;
-	count = 0;
-	while (map[x])
-	{
-		y = 0;
-		while(map[x][y])
-		{
-			if (map[x][y] == c)
-				++count;
-			++y;
-		}
-		++x;
-	}
-	return (count);
-}
-
-
-void	restore_map_total(char **map)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while(map[x][y])
-		{
-			map[x][y] = '-';
-			++y;
-		}
-		++x;
-	}
-}
-
-
-
-void	print_map(char **map)	
-{
-	int		x;
-
-	x = 0;
-	while (map[x])
-	{
-		ft_putendl(map[x]);
-		++x;
-	}
-	printf("%s\n", map[x]);
-}
-
-////////////////////////////////////////////////////////////////////////
 int		*go_to_start_of_figure(t_tet *beg)
 {
 	t_tet	*trav;
@@ -253,6 +218,8 @@ int		*go_to_start_of_figure(t_tet *beg)
 	return (fig);
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+
 int		*select_entry_on_map(char **map, int x, int y)
 {
 	int		found;
@@ -263,7 +230,7 @@ int		*select_entry_on_map(char **map, int x, int y)
 	{
 		while (map[x][y] && !found)
 		{
-			if (map[x][y] == '-')
+			if (map[x][y] == '.')
 				found = 1;
 			else
 				++y;
@@ -280,33 +247,12 @@ int		*select_entry_on_map(char **map, int x, int y)
 	entry[1] = y;
 	return (entry);
 }
-////////////////////////////////////////////////////////////////////////
 
-
-///////////////////////////////////////////////////////////////////////////
-
-void	restore_map_partial(char **map, char c)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while(map[x][y])
-		{
-			if (map[x][y] == c)
-				map[x][y] = '-';
-			++y;
-		}
-		++x;
-	}
-}
+////////////////////////////////////////////////////////////////////////////////////
 
 int		put_figure_on_map(char **figure, char **map, int i, int j, int x, int y)
 {
-	if (map[x] && map[x][y] == '-')
+	if (map[x] && map[x][y] == '.')
 	{
 		map[x][y] = figure[i][j];
 		if (j < 3 && figure[i][j + 1] != '.')
@@ -331,7 +277,52 @@ int		put_figure_on_map(char **figure, char **map, int i, int j, int x, int y)
 		return (0);
 }
 
-//////////////////////////////////////////////////////////////////////////////	
+////////////////////////////////////////////////////////////////////////////////////
+
+int		count_assigns(char **map, char c)
+{
+	int		count;
+	int		x;
+	int		y;
+
+	x = 0;
+	count = 0;
+	while (map[x])
+	{
+		y = 0;
+		while(map[x][y])
+		{
+			if (map[x][y] == c)
+				++count;
+			++y;
+		}
+		++x;
+	}
+	return (count);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
+void	restore_map_partial(char **map, char c)
+{
+	int		x;
+	int		y;
+
+	x = 0;
+	while (map[x])
+	{
+		y = 0;
+		while(map[x][y])
+		{
+			if (map[x][y] == c)
+				map[x][y] = '.';
+			++y;
+		}
+		++x;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////	
 
 int		solve_one_piece(char **map, t_tet *beg)
 {
@@ -344,7 +335,7 @@ int		solve_one_piece(char **map, t_tet *beg)
 
 	if (!beg)
 		return(1);
-	print_list_line(beg);
+//	print_list_line(beg);				/////////////// borrar
 	fig = go_to_start_of_figure(beg);
 	i = fig[0];
 	j = fig[1];
@@ -357,7 +348,7 @@ int		solve_one_piece(char **map, t_tet *beg)
 		x = entry[0];
 		y = entry[1];
 		free(entry);
-		printf("i: %d\tj: %d\t|    x: %d\ty: %d\n", i, j, x, y);////////print
+//		printf("i: %d\tj: %d\t|    x: %d\ty: %d\n", i, j, x, y);	//////// borrar
 		put_figure_on_map(beg->figure, map, i, j, x, y);
 		if (count_assigns(map, beg->letter) == 4)			 
 		{
@@ -370,7 +361,39 @@ int		solve_one_piece(char **map, t_tet *beg)
 	return (0);
 }
 
-//////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+void	destroy_map(char **map, int size)
+{
+	while (size--)
+	{
+		free(map[size]);
+	}
+	free(map);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+void	print_map(char **map)	
+{
+	int		x;
+
+	x = 0;
+	while (map[x])
+	{
+		ft_putendl(map[x]);
+		++x;
+	}
+//	printf("%s\n", map[x]);				///////////////// borrar
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////    MAIN    /////////////////////////////////////////
 
 int		main(int argc, char **argv)
 {
@@ -409,61 +432,24 @@ int		main(int argc, char **argv)
 		else
 			beg = new;
 	}
-	print_list(beg);
-	//////////////////////////////////////////////////////////////
+//	print_list(beg);					//////////////////// borrar
 	size = 2;
 	trav = beg;
-	while(1)//
-	{//
+	while(1)
+	{
 		map = create_map(size);
-		print_map(map);////////////print map				
+//		print_map(map);					//////////////////// borrar				
 		if (solve_one_piece(map, trav))
 			break ;
 		else
-			++size;
-	}
-	print_map(map);						////////////////////print map
-		
-		
-
-	
-	
-	
-	
-	
-	
-/*	find = 0;					//	<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	size = 5;
-	while (!find)
-	{
-//		perm = factorial(pz);				
-		map = create_map(size);
-		print_map(map);						////////////////////				
-		while (find == 0)			
 		{
-//			beg = sorting_list(beg, perm, pz);
-			trav = beg;
-			while (trav)
-			{
-				if (!(find_hash(trav, map)))
-				{
-					find = 0;
-					break ;
-				}
-				else
-					find = 1;
-				trav = trav->next;
-			}
-			if (find == 0)					
-				restore_map_total(map);
-			--perm;
-		}			
-		if (find == 0)
-		{
-			free(map);
+			destroy_map(map, size);
 			++size;
 		}
 	}
-	print_map(map);					/////////////////////
-*/	return (0);
+	free(beg);
+	print_map(map);						
+	return (0);
 }
+
+////////////////////////////////////    FIN    /////////////////////////////////////
