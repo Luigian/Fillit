@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 11:08:47 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/21 22:46:04 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/24 20:21:39 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,22 @@ void	print_list(t_tet *beg)
 			printf("%s\n", trav->figure[i]);
 			++i;
 		}
+		if (trav->next != NULL)
 		printf("\n");
 		trav = trav->next;
 	}
+}
+
+void	print_list_line(t_tet *beg)
+{
+	t_tet	*trav;
+	trav = beg;
+	while (trav)
+	{
+		printf("%c\t", trav->letter);
+		trav = trav->next;
+	}
+	printf("\n");
 }
 
 char	**create_map(int len)
@@ -150,32 +163,7 @@ char	**create_map(int len)
 	return (map);
 }
 
-int		fillity(char **map, char **figure, int x, int y, int i, int j)
-{
-	if (map[x] && map[x][y] == '-')
-	{
-		map[x][y] = figure[i][j];
-		if (j < 3 && figure[i][j + 1] != '.')
-		{
-			fillity(map, figure, x, ++y, i, ++j);
-			--y;
-			--j;
-		}
-		if (i < 3 && figure[i + 1][j] != '.')
-		{
-			fillity(map, figure, ++x, y, ++i, j);
-			--x;
-			--i;	
-		}
-		if (j > 0 && figure[i][j - 1] != '.')
-		{
-			fillity(map, figure, x, --y, i, --j);
-		}	
-		return (1);
-	}
-	else 
-		return (0);
-}
+
 
 int		count_assigns(char **map, char c)
 {
@@ -199,24 +187,6 @@ int		count_assigns(char **map, char c)
 	return (count);
 }
 
-void	restore_map_partial(char **map, char c)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while(map[x][y])
-		{
-			if (map[x][y] == c)
-				map[x][y] = '-';
-			++y;
-		}
-		++x;
-	}
-}
 
 void	restore_map_total(char **map)
 {
@@ -236,54 +206,7 @@ void	restore_map_total(char **map)
 	}
 }
 
-int		explore_map(t_tet *beg, int i, int j, char **map)
-{
-	int		x, y;
 
-	x = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			fillity(map, beg->figure, x, y, i, j);
-			if (count_assigns(map, beg->letter) == 4)			 
-				return (1);
-			restore_map_partial(map, beg->letter);
-			++y;
-		}
-		++x;
-	}
-	return (0);
-}
-
-int		find_hash(t_tet *beg, char **map)
-{
-	t_tet	*trav;
-	int		i;
-	int		j;
-
-	trav = beg;
-	i = 0;
-	j = 0;
-	while (trav->figure[i])
-	{
-		j = 0;
-		while (trav->figure[i][j])
-		{
-			if (trav->figure[i][j] != '.')
-			{
-				if (explore_map(trav, i, j, map))
-					return (1);
-				else
-					return (0);
-			}
-			++j;
-		}
-		++i;
-	}
-	return (0);	
-}
 
 void	print_map(char **map)	
 {
@@ -298,74 +221,156 @@ void	print_map(char **map)
 	printf("%s\n", map[x]);
 }
 
-t_tet	*sorting_list(t_tet *beg, int perm, int pz)
+////////////////////////////////////////////////////////////////////////
+int		*go_to_start_of_figure(t_tet *beg)
 {
 	t_tet	*trav;
-	t_tet	*prev;
-	t_tet	*aprev;
-	int		len;
 	int		i;
+	int		j;
+	int		first;
+	int		*fig;
 
-	i = perm;
-	while (i >= pz)
-		i -= pz;
-	printf("%d\n", i); 
-	if (i == 0 && beg->letter == 'A')
-		return (beg);
-	if ((i == 0 && beg->letter != 'A' && pz == 2) || (i == 1 && pz == 2))
+	trav = beg;
+	i = 0;
+	first = 0;
+	while (trav->figure[i] && !first)
 	{
-		trav = beg->next;
-		trav->next = beg;
-		beg->next = NULL;
-		beg = trav;
+		j = 0;
+		while (trav->figure[i][j] && !first)
+		{
+			if (trav->figure[i][j] != '.')
+				first = 1;
+			else
+				++j;
+		}
+		if (!first)
+			++i;
 	}
-	if (i == 0 && pz > 2)
-	{
-		len = pz - 2;
-		trav = beg;
-		prev = beg;
-		while (len--)
-			prev = prev->next;
-		beg = prev->next;
-		prev->next = trav;
-		beg->next = trav->next;
-		trav->next = NULL;
-	}
-	if (i == 1 && pz > 2)
-	{
-		trav = beg;
-		beg = beg->next;
-		trav->next = beg->next;
-		beg->next = trav;
-	}
-	if (i > 1 && pz > 2)
-	{
-		len = i - 2;
-		aprev = beg;
-		while (len--)
-			aprev = aprev->next;
-		prev = aprev->next;
-		trav = prev->next;
-
-		prev->next = trav->next;
-		trav->next = prev;
-		aprev->next = trav;
-	}
-//	print_list(beg);
-	return (beg);
+	if(!(fig = (int *)malloc(sizeof(int) * 2)))
+		return (NULL);
+	fig[0] = i;
+	fig[1] = j;
+	return (fig);
 }
 
-int		factorial(int pz)
+int		*select_entry_on_map(char **map, int x, int y)
 {
-	int		perm;
-	int		c;
-
-	perm = 1;
-	c = 1;
-	while ( c <= pz)
-		perm = perm * c++;
-	return perm;
+	int		found;
+	int		*entry;
+	
+	found = 0;
+	while (map[x] && !found)
+	{
+		while (map[x][y] && !found)
+		{
+			if (map[x][y] == '-')
+				found = 1;
+			else
+				++y;
+		}
+		if (!found)
+		{
+			++x;
+			y = 0;
+		}
+	}	
+	if(!(entry = (int *)malloc(sizeof(int) * 2)))
+		return (NULL);
+	entry[0] = x;
+	entry[1] = y;
+	return (entry);
 }
+////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////
+
+void	restore_map_partial(char **map, char c)
+{
+	int		x;
+	int		y;
+
+	x = 0;
+	while (map[x])
+	{
+		y = 0;
+		while(map[x][y])
+		{
+			if (map[x][y] == c)
+				map[x][y] = '-';
+			++y;
+		}
+		++x;
+	}
+}
+
+int		put_figure_on_map(char **figure, char **map, int i, int j, int x, int y)
+{
+	if (map[x] && map[x][y] == '-')
+	{
+		map[x][y] = figure[i][j];
+		if (j < 3 && figure[i][j + 1] != '.')
+		{
+			put_figure_on_map(figure, map, i, ++j, x, ++y);
+			--j;
+			--y;
+		}
+		if (i < 3 && figure[i + 1][j] != '.')
+		{
+			put_figure_on_map(figure, map, ++i, j, ++x, y);
+			--i;
+			--x;	
+		}
+		if (j > 0 && figure[i][j - 1] != '.')
+		{
+			put_figure_on_map(figure, map, i, --j, x, --y);
+		}	
+		return (1);
+	}
+	else 
+		return (0);
+}
+
+//////////////////////////////////////////////////////////////////////////////	
+
+int		solve_one_piece(char **map, t_tet *beg)
+{
+	int		i;
+	int		j;
+	int		*fig;
+	int		x;
+	int		y;
+	int		*entry;
+
+	if (!beg)
+		return(1);
+	print_list_line(beg);
+	fig = go_to_start_of_figure(beg);
+	i = fig[0];
+	j = fig[1];
+	x = 0;
+	y = 0;
+	free(fig);
+	while (map[x])
+	{
+		entry = select_entry_on_map(map, x, y);
+		x = entry[0];
+		y = entry[1];
+		free(entry);
+		printf("i: %d\tj: %d\t|    x: %d\ty: %d\n", i, j, x, y);////////print
+		put_figure_on_map(beg->figure, map, i, j, x, y);
+		if (count_assigns(map, beg->letter) == 4)			 
+		{
+			if (solve_one_piece(map, beg->next))
+				return (1);
+		}
+		restore_map_partial(map, beg->letter);
+		++y;
+	}
+	return (0);
+}
+
+//////////////////////////////////////////////////////////////////////////////
 
 int		main(int argc, char **argv)
 {
@@ -379,7 +384,7 @@ int		main(int argc, char **argv)
 	char		**map;
 	int			size;
 	int			find;
-	int			perm;										
+	int			perm;
 
 	if (argc != 2)
 	{
@@ -404,15 +409,39 @@ int		main(int argc, char **argv)
 		else
 			beg = new;
 	}
-	find = 0;
+	print_list(beg);
+	//////////////////////////////////////////////////////////////
 	size = 2;
+	trav = beg;
+	while(1)//
+	{//
+		map = create_map(size);
+		print_map(map);////////////print map				
+		if (solve_one_piece(map, trav))
+			break ;
+		else
+			++size;
+	}
+	print_map(map);						////////////////////print map
+		
+		
+
+	
+	
+	
+	
+	
+	
+/*	find = 0;					//	<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	size = 5;
 	while (!find)
 	{
-		perm = factorial(pz);				
+//		perm = factorial(pz);				
 		map = create_map(size);
-		while (perm && find == 0)			
+		print_map(map);						////////////////////				
+		while (find == 0)			
 		{
-			beg = sorting_list(beg, perm, pz);
+//			beg = sorting_list(beg, perm, pz);
 			trav = beg;
 			while (trav)
 			{
@@ -435,6 +464,6 @@ int		main(int argc, char **argv)
 			++size;
 		}
 	}
-	print_map(map);
-	return (0);
+	print_map(map);					/////////////////////
+*/	return (0);
 }
