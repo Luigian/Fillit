@@ -6,39 +6,21 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:45:05 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/26 20:40:13 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/27 21:32:14 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int		invalid(char *s, int ret)
+t_tet	*add_obj(t_tet *beg, t_tet *new)
 {
-	int		i;
-	int		h;
-	int		n;
+	t_tet	*trav;
 
-	i = 0;
-	h = 0;
-	n = 0;
-	while (s[i] && (s[i] == '.' || s[i] == '#' || s[i] == '\n'))
-	{
-		if (s[i] == '#' || s[i] == '\n')
-		{
-			s[i] == '#' ? ++h : ++n;
-			if ((s[i] == '#' && ((h == 1 && s[i + 1] != '#' && s[i + 5] != '#')\
-			|| (h == 2 && ((s[i + 1] != '#' && s[i + 5] != '#') && (s[i - 1] !=\
-			'#' || s[i + 4] != '#'))) || (h == 4 && s[i - 1] != '#' && s[i - 5]\
-			!= '#'))) || (s[i] == '\n' && (i != 4 && i != 9 && i != 14 && i !=\
-			19 && i != 20)))
-				return (1);
-		}
-		++i;
-	}
-	if (!s[i] && h == 4 && ((ret == (BUFF_SIZE - 2) && n == 3) ||\
-		(ret == (BUFF_SIZE - 1) && n == 4) || (ret == BUFF_SIZE && n == 5)))
-		return (0);
-	return (1);
+	trav = beg;
+	while (trav->next)
+		trav = trav->next;
+	trav->next = new;
+	return (beg);
 }
 
 int		create_figure(t_tet *obj, char *buf)
@@ -82,13 +64,31 @@ t_tet	*create_obj(char *buf, int pz)
 	return (obj);
 }
 
-t_tet	*add_obj(t_tet *beg, t_tet *new)
+int		invalid(char *s, int ret)
 {
-	t_tet	*trav;
+	int		i;
+	int		h;
+	int		n;
 
-	trav = beg;
-	while (trav->next)
-		trav = trav->next;
-	trav->next = new;
-	return (beg);
+	i = 0;
+	h = 0;
+	n = 0;
+	while (s[i] && (s[i] == '.' || s[i] == '#' || s[i] == '\n'))
+	{
+		if (s[i] == '#' || s[i] == '\n')
+		{
+			s[i] == '#' ? ++h : ++n;
+			if ((s[i] == '#' && ((h == 1 && s[i + 1] != '#' && s[i + 5] != '#')\
+			|| (h == 2 && ((s[i + 1] != '#' && s[i + 5] != '#') && (s[i - 1] !=\
+			'#' || s[i + 4] != '#'))) || (h == 4 && s[i - 1] != '#' && s[i - 5]\
+			!= '#'))) || (s[i] == '\n' && (i != 4 && i != 9 && i != 14 && i !=\
+			19 && i != 20)))
+				return (1);
+		}
+		++i;
+	}
+	if (!s[i] && h == 4 && ((ret == (BUFF_SIZE - 2) && n == 3) ||\
+		(ret == (BUFF_SIZE - 1) && n == 4) || (ret == BUFF_SIZE && n == 5)))
+		return (0);
+	return (1);
 }

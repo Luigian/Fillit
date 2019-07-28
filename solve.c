@@ -6,10 +6,10 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:34:27 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/27 21:00:03 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/27 21:43:32 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
+
 #include "fillit.h"
 
 int		count_assigns(char **map, char c)
@@ -34,128 +34,48 @@ int		count_assigns(char **map, char c)
 	return (count);
 }
 
-void	add_sub_int_in_array(int *fig, int *entry, int	index, char sign)
+void	add_sub_int_array(int *fig, int *entry, int ind, char sign)
 {
 	if (sign == '+')
 	{
-		++fig[index];
-		++entry[index];
+		++fig[ind];
+		++entry[ind];
 	}
 	else if (sign == '-')
 	{
-		--fig[index];
-		--entry[index];
+		--fig[ind];
+		--entry[ind];
 	}
 }
 
-int		put_figure_on_map(char **figure, char **map, int *fig, int *entry)
+int		put_fig_on(char **figure, char **map, int *fig, int *entry)
 {
 	if (map[entry[0]] && map[entry[0]][entry[1]] == '.')
 	{
 		map[entry[0]][entry[1]] = figure[fig[0]][fig[1]];
 		if (fig[1] < 3 && figure[fig[0]][fig[1] + 1] != '.')
-		{	
-			add_sub_int_in_array(fig, entry, 1, '+');
-			put_figure_on_map(figure, map, fig, entry);
-			add_sub_int_in_array(fig, entry, 1, '-');
+		{
+			add_sub_int_array(fig, entry, 1, '+');
+			put_fig_on(figure, map, fig, entry);
+			add_sub_int_array(fig, entry, 1, '-');
 		}
 		if (fig[0] < 3 && figure[fig[0] + 1][fig[1]] != '.')
 		{
-			add_sub_int_in_array(fig, entry, 0, '+');
-			put_figure_on_map(figure, map, fig, entry);
-			add_sub_int_in_array(fig, entry, 0, '-');
+			add_sub_int_array(fig, entry, 0, '+');
+			put_fig_on(figure, map, fig, entry);
+			add_sub_int_array(fig, entry, 0, '-');
 		}
 		if (fig[1] > 0 && figure[fig[0]][fig[1] - 1] != '.')
 		{
-			add_sub_int_in_array(fig, entry, 1, '-');
-			put_figure_on_map(figure, map, fig, entry);
-			add_sub_int_in_array(fig, entry, 1, '+');
+			add_sub_int_array(fig, entry, 1, '-');
+			put_fig_on(figure, map, fig, entry);
+			add_sub_int_array(fig, entry, 1, '+');
 		}
 		return (1);
 	}
 	return (0);
 }
-/*
-int		put_figure_on_map(char **figure, char **map, int *fig, int *entry)
-{
-	if (map[entry[0]] && map[entry[0]][entry[1]] == '.')
-	{
-		map[entry[0]][entry[1]] = figure[fig[0]][fig[1]];
-		if (fig[1] < 3 && figure[fig[0]][fig[1] + 1] != '.')
-		{	
-			++fig[1];
-			++entry[1];
-			put_figure_on_map(figure, map, fig, entry);
-			--fig[1];
-			--entry[1];
-		}
-		if (fig[0] < 3 && figure[fig[0] + 1][fig[1]] != '.')
-		{
-			++fig[0];
-			++entry[0];
-			put_figure_on_map(figure, map, fig, entry);
-			--fig[0];
-			--entry[0];
-		}
-		if (fig[1] > 0 && figure[fig[0]][fig[1] - 1] != '.')
-		{
-			--fig[1];
-			--entry[1];
-			put_figure_on_map(figure, map, fig, entry);
-			++fig[1];
-			++entry[1];
-		}
-		return (1);
-	}
-	return (0);
-}
-*/
-/*
-int		put_figure_on_map(char **figure, char **map, int i, int j, int x, int y)
-{
-	if (map[x] && map[x][y] == '.')
-	{
-		map[x][y] = figure[i][j];
-		if (j < 3 && figure[i][j + 1] != '.')
-			put_figure_on_map(figure, map, i, j + 1, x, y + 1);
-		if (i < 3 && figure[i + 1][j] != '.')
-			put_figure_on_map(figure, map, i + 1, j, x + 1, y);
-		if (j > 0 && figure[i][j - 1] != '.')
-			put_figure_on_map(figure, map, i, j - 1, x, y - 1);
-		return (1);
-	}
-	else
-		return (0);
-}
-*/
-/*
-int		put_figure_on_map(char **figure, char **map, int i, int j, int x, int y)
-{
-	if (map[x] && map[x][y] == '.')
-	{
-		map[x][y] = figure[i][j];
-		if (j < 3 && figure[i][j + 1] != '.')
-		{
-			put_figure_on_map(figure, map, i, ++j, x, ++y);
-			--j;
-			--y;
-		}
-		if (i < 3 && figure[i + 1][j] != '.')
-		{
-			put_figure_on_map(figure, map, ++i, j, ++x, y);
-			--i;
-			--x;
-		}
-		if (j > 0 && figure[i][j - 1] != '.')
-		{
-			put_figure_on_map(figure, map, i, --j, x, --y);
-		}
-		return (1);
-	}
-	else
-		return (0);
-}
-*/
+
 int		*select_entry_on_map(char **map, int x, int y)
 {
 	int		found;

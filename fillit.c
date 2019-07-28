@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/27 09:52:22 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/27 21:21:21 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int		check_map(t_tet *beg, char **map, int *fig)
 		entry = select_entry_on_map(map, x, y);
 		x = entry[0];
 		y = entry[1];
-		put_figure_on_map(beg->figure, map, fig, entry);
+		put_fig_on(beg->figure, map, fig, entry);
 		if (count_assigns(map, beg->letter) == 4)
 		{
 			if (solve_one_piece(map, beg->next))
-			{	
+			{
 				free(entry);
 				return (1);
 			}
@@ -60,50 +60,6 @@ int		solve_one_piece(char **map, t_tet *beg)
 	return (1);
 }
 
-/*
-int		check_map(t_tet *beg, char **map, int i, int j)
-{
-	int		x;
-	int		y;
-	int		*entry;
-
-	x = 0;
-	y = 0;
-	while (map[x])
-	{
-		entry = select_entry_on_map(map, x, y);
-		x = entry[0];
-		y = entry[1];
-		free(entry);
-		put_figure_on_map(beg->figure, map, i, j, x, y);
-		if (count_assigns(map, beg->letter) == 4)
-		{
-			if (solve_one_piece(map, beg->next))
-				return (1);
-		}
-		restore_map_partial(map, beg->letter);
-		++y;
-	}
-	return (0);
-}
-
-int		solve_one_piece(char **map, t_tet *beg)
-{
-	int		i;
-	int		j;
-	int		*fig;
-
-	if (!beg)
-		return (1);
-	fig = go_to_start_of_figure(beg);
-	i = fig[0];
-	j = fig[1];
-	free(fig);
-	if (!(check_map(beg, map, i, j)))
-		return (0);
-	return (1);
-}
-*/
 t_tet	*read_validate_and_list(int fd)
 {
 	char		buf[BUFF_SIZE + 1];

@@ -6,32 +6,31 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:50:26 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/26 20:53:40 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/27 21:35:00 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-char	**create_map(int len)
+void	print_map(char **map)
 {
-	char	**map;
 	int		x;
-	int		y;
 
-	if (!(map = ft_stranew(len)))
-		return (0);
-	x = len;
-	while (x--)
+	x = 0;
+	while (map[x])
 	{
-		if (!(map[x] = ft_strnew(len)))
-			return (0);
-		y = len;
-		while (y--)
-			map[x][y] = '.';
-		map[x][y + len] = '\0';
+		ft_putendl(map[x]);
+		++x;
 	}
-	map[x + len] = NULL;
-	return (map);
+}
+
+void	destroy_map(char **map, int size)
+{
+	while (size--)
+	{
+		free(map[size]);
+	}
+	free(map);
 }
 
 void	restore_map_partial(char **map, char c)
@@ -53,23 +52,24 @@ void	restore_map_partial(char **map, char c)
 	}
 }
 
-void	destroy_map(char **map, int size)
+char	**create_map(int len)
 {
-	while (size--)
-	{
-		free(map[size]);
-	}
-	free(map);
-}
-
-void	print_map(char **map)
-{
+	char	**map;
 	int		x;
+	int		y;
 
-	x = 0;
-	while (map[x])
+	if (!(map = ft_stranew(len)))
+		return (0);
+	x = len;
+	while (x--)
 	{
-		ft_putendl(map[x]);
-		++x;
+		if (!(map[x] = ft_strnew(len)))
+			return (0);
+		y = len;
+		while (y--)
+			map[x][y] = '.';
+		map[x][y + len] = '\0';
 	}
+	map[x + len] = NULL;
+	return (map);
 }
