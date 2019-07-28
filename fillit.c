@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/28 09:30:23 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/28 09:45:40 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ int		main(int argc, char **argv)
 	if (argc != 2)
 	{
 		write(1, "usage: ./fillit source_file\n", 28);
-		exit (0);
+		exit(0);
 	}
 	fd = open(argv[1], O_RDONLY, 0);
 	if (!(beg = read_validate_and_list(fd)))
-		exit (0);
+		exit(0);
 	close(fd);
 	trav = beg;
 	while (1)
@@ -111,8 +111,7 @@ int		main(int argc, char **argv)
 		map = create_map(argc);
 		if (solve_one_piece(map, trav))
 			break ;
-		else
-			destroy_map(map, argc++);
+		destroy_map(map, argc++);
 	}
 	free(beg);
 	print_map(map);
