@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/27 21:21:21 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/28 09:30:23 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,13 @@ int		main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		write(1, "usage\n", 6);
-		return (-1);
+		write(1, "usage: ./fillit source_file\n", 28);
+		exit (0);
 	}
 	fd = open(argv[1], O_RDONLY, 0);
 	if (!(beg = read_validate_and_list(fd)))
-		return (-1);
+		exit (0);
+	close(fd);
 	trav = beg;
 	while (1)
 	{
