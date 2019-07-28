@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:45:05 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/25 16:50:50 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/26 20:40:13 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,84 +41,47 @@ int		invalid(char *s, int ret)
 	return (1);
 }
 
-t_tet	*create_obj(char *buf, int pz)
+int		create_figure(t_tet *obj, char *buf)
 {
-	t_tet		*obj;
-//	int			heigh;
-//	int			wide;
-	int			x;
-	int			y;
-	char		i;
+	int		x;
+	int		y;
+	int		i;
 
-	if (!(obj = (t_tet *)malloc(sizeof(t_tet) * 1)))
-		return (NULL);
-	obj->letter = pz + 64;
 	x = 4;
 	if (!(obj->figure = (char **)malloc(sizeof(char *) * x + 1)))
-		return (NULL);
+		return (0);
 	i = 18;
 	while (x--)
 	{
 		y = 4;
 		if (!(obj->figure[x] = (char *)malloc(sizeof(char) * y + 1)))
-			return (NULL);
+			return (0);
 		while (y--)
 		{
-			if (buf[i] == '#')
-				obj->figure[x][y] = obj->letter;
-			else if (buf[i] == '.')
-				obj->figure[x][y] = '.';
+			if (buf[i] == '#' || buf[i] == '.')
+				obj->figure[x][y] = (buf[i] == '#' ? obj->letter : '.');
 			--i;
 		}
 		obj->figure[x][4] = '\0';
 		--i;
 	}
 	obj->figure[4] = NULL;
-	obj->next = NULL;
-	return (obj);
+	return (1);
 }
-/*
+
 t_tet	*create_obj(char *buf, int pz)
 {
-	t_tet		*obj;
-	int			heigh;
-	int			wide;
-	int			x;
-	int			y;
-	char		i;
+	t_tet	*obj;
 
 	if (!(obj = (t_tet *)malloc(sizeof(t_tet) * 1)))
 		return (NULL);
 	obj->letter = pz + 64;
-	heigh = 4;
-	if (!(obj->figure = (char **)malloc(sizeof(char *) * heigh + 1)))
+	if (!(create_figure(obj, buf)))
 		return (NULL);
-	x = 0;
-	i = 0;
-	while (heigh--)
-	{
-		wide = 4;
-		if (!(obj->figure[x] = (char *)malloc(sizeof(char) * wide + 1)))
-			return (NULL);
-		y = 0;
-		while (wide--)
-		{
-			if (buf[i] == '#')
-				obj->figure[x][y] = obj->letter;
-			else if (buf[i] == '.')
-				obj->figure[x][y] = '.';
-			++y;
-			++i;
-		}
-		obj->figure[x][y] = '\0';
-		++i;
-		++x;
-	}
-	obj->figure[x] = NULL;
 	obj->next = NULL;
 	return (obj);
 }
-*/
+
 t_tet	*add_obj(t_tet *beg, t_tet *new)
 {
 	t_tet	*trav;

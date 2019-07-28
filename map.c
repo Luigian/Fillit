@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:50:26 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/25 13:31:37 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/26 20:53:40 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,23 @@
 
 char	**create_map(int len)
 {
-	char 	**map;
-	int		x, y = 0;
-	int		heigh, wide;
+	char	**map;
+	int		x;
+	int		y;
 
-	heigh = len;
-	if (!(map = ft_stranew(heigh)))
+	if (!(map = ft_stranew(len)))
 		return (0);
-	x = 0;
-	while (heigh--)
+	x = len;
+	while (x--)
 	{
-		wide = len;
-		if (!(map[x] = ft_strnew(wide)))
+		if (!(map[x] = ft_strnew(len)))
 			return (0);
-		y = 0;
-		while (wide--)
-		{
+		y = len;
+		while (y--)
 			map[x][y] = '.';
-			++y;
-		}
-		map[x][y] = '\0';
-		++x;
+		map[x][y + len] = '\0';
 	}
-	map[x] = NULL;
+	map[x + len] = NULL;
 	return (map);
 }
 
@@ -49,7 +43,7 @@ void	restore_map_partial(char **map, char c)
 	while (map[x])
 	{
 		y = 0;
-		while(map[x][y])
+		while (map[x][y])
 		{
 			if (map[x][y] == c)
 				map[x][y] = '.';
