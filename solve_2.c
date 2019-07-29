@@ -6,32 +6,11 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:50:26 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/27 21:35:00 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:55:45 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-void	print_map(char **map)
-{
-	int		x;
-
-	x = 0;
-	while (map[x])
-	{
-		ft_putendl(map[x]);
-		++x;
-	}
-}
-
-void	destroy_map(char **map, int size)
-{
-	while (size--)
-	{
-		free(map[size]);
-	}
-	free(map);
-}
 
 void	restore_map_partial(char **map, char c)
 {
@@ -52,24 +31,38 @@ void	restore_map_partial(char **map, char c)
 	}
 }
 
-char	**create_map(int len)
+int		count_assigns(char **map, char c)
 {
-	char	**map;
+	int		count;
 	int		x;
 	int		y;
 
-	if (!(map = ft_stranew(len)))
-		return (0);
-	x = len;
-	while (x--)
+	x = 0;
+	count = 0;
+	while (map[x])
 	{
-		if (!(map[x] = ft_strnew(len)))
-			return (0);
-		y = len;
-		while (y--)
-			map[x][y] = '.';
-		map[x][y + len] = '\0';
+		y = 0;
+		while (map[x][y])
+		{
+			if (map[x][y] == c)
+				++count;
+			++y;
+		}
+		++x;
 	}
-	map[x + len] = NULL;
-	return (map);
+	return (count);
+}
+
+void	add_sub_int_array(int *fig, int *entry, int ind, char sign)
+{
+	if (sign == '+')
+	{
+		++fig[ind];
+		++entry[ind];
+	}
+	else if (sign == '-')
+	{
+		--fig[ind];
+		--entry[ind];
+	}
 }

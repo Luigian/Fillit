@@ -6,40 +6,31 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/28 09:45:40 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/28 22:00:35 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include <fcntl.h>
 
-int		check_map(t_tet *beg, char **map, int *fig)
+void	print_map(char **map)
 {
 	int		x;
-	int		y;
-	int		*entry;
 
 	x = 0;
-	y = 0;
 	while (map[x])
 	{
-		entry = select_entry_on_map(map, x, y);
-		x = entry[0];
-		y = entry[1];
-		put_fig_on(beg->figure, map, fig, entry);
-		if (count_assigns(map, beg->letter) == 4)
-		{
-			if (solve_one_piece(map, beg->next))
-			{
-				free(entry);
-				return (1);
-			}
-		}
-		restore_map_partial(map, beg->letter);
-		++y;
+		ft_putendl(map[x]);
+		++x;
 	}
-	free(entry);
-	return (0);
+}
+
+void	destroy_map(char **map, int size)
+{
+	while (size--)
+	{
+		free(map[size]);
+	}
+	free(map);
 }
 
 int		solve_one_piece(char **map, t_tet *beg)
@@ -58,6 +49,28 @@ int		solve_one_piece(char **map, t_tet *beg)
 	}
 	free(fig);
 	return (1);
+}
+
+char	**create_map(int len)
+{
+	char	**map;
+	int		x;
+	int		y;
+
+	if (!(map = ft_stranew(len)))
+		return (0);
+	x = len;
+	while (x--)
+	{
+		if (!(map[x] = ft_strnew(len)))
+			return (0);
+		y = len;
+		while (y--)
+			map[x][y] = '.';
+		map[x][y + len] = '\0';
+	}
+	map[x + len] = NULL;
+	return (map);
 }
 
 t_tet	*read_validate_and_list(int fd)
@@ -87,33 +100,4 @@ t_tet	*read_validate_and_list(int fd)
 			beg = new;
 	}
 	return (beg);
-}
-
-int		main(int argc, char **argv)
-{
-	int			fd;
-	t_tet		*beg;
-	t_tet		*trav;
-	char		**map;
-
-	if (argc != 2)
-	{
-		write(1, "usage: ./fillit source_file\n", 28);
-		exit(0);
-	}
-	fd = open(argv[1], O_RDONLY, 0);
-	if (!(beg = read_validate_and_list(fd)))
-		exit(0);
-	close(fd);
-	trav = beg;
-	while (1)
-	{
-		map = create_map(argc);
-		if (solve_one_piece(map, trav))
-			break ;
-		destroy_map(map, argc++);
-	}
-	free(beg);
-	print_map(map);
-	return (0);
 }

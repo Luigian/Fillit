@@ -6,47 +6,11 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:34:27 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/27 21:43:32 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:58:07 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-int		count_assigns(char **map, char c)
-{
-	int		count;
-	int		x;
-	int		y;
-
-	x = 0;
-	count = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == c)
-				++count;
-			++y;
-		}
-		++x;
-	}
-	return (count);
-}
-
-void	add_sub_int_array(int *fig, int *entry, int ind, char sign)
-{
-	if (sign == '+')
-	{
-		++fig[ind];
-		++entry[ind];
-	}
-	else if (sign == '-')
-	{
-		--fig[ind];
-		--entry[ind];
-	}
-}
 
 int		put_fig_on(char **figure, char **map, int *fig, int *entry)
 {
@@ -102,6 +66,35 @@ int		*select_entry_on_map(char **map, int x, int y)
 	entry[0] = x;
 	entry[1] = y;
 	return (entry);
+}
+
+int		check_map(t_tet *beg, char **map, int *fig)
+{
+	int		x;
+	int		y;
+	int		*entry;
+
+	x = 0;
+	y = 0;
+	while (map[x])
+	{
+		entry = select_entry_on_map(map, x, y);
+		x = entry[0];
+		y = entry[1];
+		put_fig_on(beg->figure, map, fig, entry);
+		if (count_assigns(map, beg->letter) == 4)
+		{
+			if (solve_one_piece(map, beg->next))
+			{
+				free(entry);
+				return (1);
+			}
+		}
+		restore_map_partial(map, beg->letter);
+		++y;
+	}
+	free(entry);
+	return (0);
 }
 
 int		*go_to_start_of_figure(t_tet *beg)

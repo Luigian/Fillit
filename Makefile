@@ -6,7 +6,7 @@
 #    By: lusanche <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/11 12:23:10 by lusanche          #+#    #+#              #
-#    Updated: 2019/07/25 13:24:15 by lusanche         ###   ########.fr        #
+#    Updated: 2019/07/28 22:03:52 by lusanche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = fillit
 CC = clang
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = libft/includes
-SRCS = fillit.c list.c solve.c map.c
+SRCS = main.c fillit.c read.c solve_1.c solve_2.c
 OBJS = *.o
 LIB_DIR = libft/
 
