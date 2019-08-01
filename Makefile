@@ -6,7 +6,7 @@
 #    By: lusanche <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/11 12:23:10 by lusanche          #+#    #+#              #
-#    Updated: 2019/07/28 22:03:52 by lusanche         ###   ########.fr        #
+#    Updated: 2019/07/31 22:57:35 by lusanche         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIB_DIR = libft/
 
 $(NAME):
 	@make -C $(LIB_DIR) fclean && make -C $(LIB_DIR)
-	@$(CC) $(FlAGS) -I $(INCLUDES) -c $(SRCS)
+	@$(CC) $(FLAGS) -I $(INCLUDES) -c $(SRCS)
 	@$(CC) -o $(NAME) $(OBJS) -I $(INCLUDES) -L $(LIB_DIR) -lft
 	@echo "[INFO]  Executable [$(NAME)] created (objects remaining in both directories)"
 

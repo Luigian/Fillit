@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/28 22:00:35 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/07/31 23:00:20 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	destroy_map(char **map, int size)
 
 int		solve_one_piece(char **map, t_tet *beg)
 {
-	int		i;
-	int		j;
 	int		*fig;
 
 	if (!beg)
