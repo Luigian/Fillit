@@ -6,21 +6,21 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:45:05 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/31 13:28:43 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/08/03 20:48:52 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tet	*add_obj(t_tet *beg, t_tet *new)
+t_tet	*add_obj(t_tet *beg_1, t_tet *new)
 {
 	t_tet	*trav;
 
-	trav = beg;
+	trav = beg_1;
 	while (trav->next)
 		trav = trav->next;
 	trav->next = new;
-	return (beg);
+	return (beg_1);
 }
 
 int		create_figure(t_tet *obj, char *buf)

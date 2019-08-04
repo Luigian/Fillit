@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 21:47:11 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/28 22:00:47 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/08/03 20:51:07 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int		main(int argc, char **argv)
 {
 	int			fd;
-	t_tet		*beg;
+	t_tet		*beg_0;
 	t_tet		*trav;
 	char		**map;
 
@@ -26,10 +26,10 @@ int		main(int argc, char **argv)
 		exit(0);
 	}
 	fd = open(argv[1], O_RDONLY, 0);
-	if (!(beg = read_validate_and_list(fd)))
+	if (!(beg_0 = read_validate_and_list(fd)))
 		exit(0);
 	close(fd);
-	trav = beg;
+	trav = beg_0;
 	while (1)
 	{
 		map = create_map(argc);
@@ -37,7 +37,6 @@ int		main(int argc, char **argv)
 			break ;
 		destroy_map(map, argc++);
 	}
-	free(beg);
-	print_map(map);
+	print_map(map, beg_0, argc);
 	return (0);
 }

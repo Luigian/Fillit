@@ -6,7 +6,7 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:34:27 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/31 13:29:10 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/08/03 20:04:05 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		*select_entry_on_map(char **map, int x, int y)
 	return (entry);
 }
 
-int		check_map(t_tet *beg, char **map, int *fig)
+int		check_map(t_tet *beg_4, char **map, int *fig)
 {
 	int		x;
 	int		y;
@@ -81,23 +81,23 @@ int		check_map(t_tet *beg, char **map, int *fig)
 		entry = select_entry_on_map(map, x, y);
 		x = entry[0];
 		y = entry[1];
-		put_fig_on(beg->figure, map, fig, entry);
-		if (count_assigns(map, beg->letter) == 4)
+		put_fig_on(beg_4->figure, map, fig, entry);
+		if (count_assigns(map, beg_4->letter) == 4)
 		{
-			if (solve_one_piece(map, beg->next))
+			if (solve_one_piece(map, beg_4->next))
 			{
 				free(entry);
 				return (1);
 			}
 		}
-		restore_map_partial(map, beg->letter);
+		restore_map_partial(map, beg_4->letter);
 		++y;
 	}
 	free(entry);
 	return (0);
 }
 
-int		*go_to_start_of_figure(t_tet *beg)
+int		*go_to_start_of_figure(t_tet *beg_3)
 {
 	int		i;
 	int		j;
@@ -106,12 +106,12 @@ int		*go_to_start_of_figure(t_tet *beg)
 
 	i = 0;
 	first = 0;
-	while (beg->figure[i] && !first)
+	while (beg_3->figure[i] && !first)
 	{
 		j = 0;
-		while (beg->figure[i][j] && !first)
+		while (beg_3->figure[i][j] && !first)
 		{
-			if (beg->figure[i][j] != '.')
+			if (beg_3->figure[i][j] != '.')
 				first = 1;
 			else
 				++j;

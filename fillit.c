@@ -6,13 +6,13 @@
 /*   By: lusanche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 12:22:33 by lusanche          #+#    #+#             */
-/*   Updated: 2019/07/31 23:00:20 by lusanche         ###   ########.fr       */
+/*   Updated: 2019/08/03 20:46:41 by lusanche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	print_map(char **map)
+void	print_map(char **map, t_tet *beg_5, int size_2)
 {
 	int		x;
 
@@ -22,25 +22,35 @@ void	print_map(char **map)
 		ft_putendl(map[x]);
 		++x;
 	}
+	destroy_map(map, size_2);
+	free(beg_5->figure[0]);
+	free(beg_5->figure[1]);
+	free(beg_5->figure[2]);
+	free(beg_5->figure[3]);
+	free(beg_5->figure);
+	free(beg_5);
 }
 
-void	destroy_map(char **map, int size)
+void	destroy_map(char **map, int size_1)
 {
-	while (size--)
+	int		x;
+
+	x = size_1 + 1;
+	while (x--)
 	{
-		free(map[size]);
+		free(map[size_1--]);
 	}
 	free(map);
 }
 
-int		solve_one_piece(char **map, t_tet *beg)
+int		solve_one_piece(char **map, t_tet *beg_2)
 {
 	int		*fig;
 
-	if (!beg)
+	if (!beg_2)
 		return (1);
-	fig = go_to_start_of_figure(beg);
-	if (!(check_map(beg, map, fig)))
+	fig = go_to_start_of_figure(beg_2);
+	if (!(check_map(beg_2, map, fig)))
 	{
 		free(fig);
 		return (0);
@@ -77,7 +87,7 @@ t_tet	*read_validate_and_list(int fd)
 	int			ret;
 	int			pz;
 	t_tet		*new;
-	t_tet		*beg;
+	t_tet		*beg_1;
 
 	ret = BUFF_SIZE;
 	pz = 0;
@@ -93,9 +103,9 @@ t_tet	*read_validate_and_list(int fd)
 		if (!(new = create_obj(buf, pz)))
 			return (NULL);
 		if (new->letter != 'A')
-			beg = add_obj(beg, new);
+			beg_1 = add_obj(beg_1, new);
 		else
-			beg = new;
+			beg_1 = new;
 	}
-	return (beg);
+	return (beg_1);
 }
