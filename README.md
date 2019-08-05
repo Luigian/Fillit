@@ -44,5 +44,4 @@ In this project we created a program called `fillit` wich allow you to take as a
 
 ### Authors:
 
-`Vitruvian Men` | Emanuel Diaz Ortega & Luis Sanchez Quiros.
-
+`Vitruvian Men` | Emmanuel Diaz Ortega & Luis Sanchez Quiros.
