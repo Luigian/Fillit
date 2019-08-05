@@ -11,7 +11,7 @@ In this project i created a function called `get_next_line` wich allow you to re
 ![](resources/images/fillit_input.png)
 
 ### Output:
-!(resources/images/fillit_output.png)
+![](resources/images/fillit_output.png)
 
 ### Key points:
 
