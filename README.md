@@ -7,6 +7,12 @@ In this project i created a function called `get_next_line` wich allow you to re
 ### Flowchart:
 ![](resources/images/fillit_flowchart.png)
 
+### Input:
+![](resources/images/fillit_input.png)
+
+### Output:
+![](resources/images/fillit_output.png)
+
 ### Key points:
 
 * Functions `open`, `read`, `close` and buff size adaptation.
