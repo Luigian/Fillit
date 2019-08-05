@@ -2,7 +2,7 @@
 
 # Fillit
 
-In this project i created a program called `fillit` wich allow you to take as a parameter a file wich contains a list from 1 to 26 pieces of tetriminos and display, on the standard output, all of them assembled together in the smallest possible square, assigning a capital letter to each tetrimino, starting with ’A’. The main goal is to find the smallest square in the minimal amount of time, despite an exponentially growing number of possibilities each time a piece is added.
+In this project we created a program called `fillit` wich allow you to take as a parameter a file wich contains a list from 1 to 26 pieces of tetriminos and display, on the standard output, all of them assembled together in the smallest possible square, assigning a capital letter to each tetrimino, starting with ’A’. The main goal is to find the smallest square in the minimal amount of time, despite an exponentially growing number of possibilities each time a piece is added.
 
 ### Flowchart:
 ![](resources/images/fillit_flowchart.png)
@@ -41,3 +41,8 @@ In this project i created a program called `fillit` wich allow you to take as a 
 ### Execution:
 
 `./fillit 'source_file'` | Solve from a single file.
+
+### Authors:
+
+`Vitruvian Men` | Emanuel Diaz Ortega & Luis Sanchez Quiros.
+
