@@ -2,7 +2,7 @@
 
 # Fillit
 
-In this project i created a function called `get_next_line` wich allow you to read content line by line from a file descriptor (whether a file, standard input, or even later a network connection). Calling it in a loop will read one line at a time until the end of the text.
+In this project i created a program called `fillit` wich allow you to take as a parameter a file wich contains a list from 1 to 26 pieces of tetriminos and display, on the standard output, all of them assembled together in the smallest possible square, assigning a capital letter to each tetrimino, starting with ’A’. The main goal is to find the smallest square in the minimal amount of time, despite an exponentially growing number of possibilities each time a piece is added.
 
 ### Flowchart:
 ![](resources/images/fillit_flowchart.png)
@@ -23,15 +23,15 @@ In this project i created a function called `get_next_line` wich allow you to re
 
 ### Objectives:
 
-* Filedescriptors. 
-* Buffering.
-* Basic parsing. 
+* Basic algorithm. 
+* Entries / exits.
 
 ### Skills:
-
-* Imperative programming.
-* Rigor.
+ 
 * Algorithms & AI.
+* Rigor.
+* Unix.
+* Group & interpersonal
 
 ### Compilation:
 
@@ -43,18 +43,4 @@ In this project i created a function called `get_next_line` wich allow you to re
 
 ### Execution:
 
-`./test_gnl` | Read from Standard Input.
-
-`./test_gnl "file_path"` | Read from a single file.
-
-`./test_gnl "file_path_1" "file_path_2" "file_path_3"` | Read from multiple files.
-
-`./test_gnl "file_path_1" "file_path_2" "file_path_3" mix n` | Read n lines from multiple files.
-
-### Returning values:
-
-`1` | Line read.
-
-`0` | No read, end of file.
-
-`-1` | Error.
+`./fillit 'source_file'` | Solve from a single file.
