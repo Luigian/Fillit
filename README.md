@@ -15,11 +15,8 @@ In this project i created a program called `fillit` wich allow you to take as a 
 
 ### Key points:
 
-* Functions `open`, `read`, `close` and buff size adaptation.
-* Utilization of temporal variables.
-* Static variables.
-* Proper allocation and destruction of heap memory.
-* Managing multiple file descriptors.
+* Structures, linked lists.
+* Recursion, backtracking.
 
 ### Objectives:
 
