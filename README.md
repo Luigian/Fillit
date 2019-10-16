@@ -4,33 +4,33 @@
 
 In this project we created a program called `fillit` wich allow you to take as a parameter a file wich contains a list from 1 to 26 pieces of tetriminos and display, on the standard output, all of them assembled together in the smallest possible square, assigning a capital letter to each tetrimino, starting with ’A’. The main goal is to find the smallest square in the minimal amount of time, despite an exponentially growing number of possibilities each time a piece is added.
 
-### Flowchart:
+## Flowchart:
 ![](resources/images/fillit_flowchart.png)
 
-### Input:
+## Input:
 ![](resources/images/fillit_input.jpg)
 
-### Output:
+## Output:
 ![](resources/images/fillit_output.jpg)
 
-### Key points:
+## Key points:
 
 * Structures, linked lists.
 * Recursion, backtracking.
 
-### Objectives:
+## Objectives:
 
 * Basic algorithm. 
 * Entries / exits.
 
-### Skills:
+## Skills:
  
 * Algorithms & AI.
 * Rigor.
 * Unix.
 * Group & interpersonal
 
-### Compilation:
+## Compilation:
 
 `make all` | First time compilation.
 
@@ -38,11 +38,11 @@ In this project we created a program called `fillit` wich allow you to take as a
 
 `make re` | Delete files generated from compilation and recompile.
 
-### Execution:
+## Execution:
 
 `./fillit 'source_file'` | Solve from a single file.
 
-### Authors:
+## Authors:
 
-`Vitruvian Men` | Emmanuel Diaz Ortega & Luis Sanchez Quiros.
+`Vitruvian Men` | Emmanuel Diaz Ortega & [Luis Julian Sanchez Quiros](https://www.linkedin.com/in/luis-juli%C3%A1n-s%C3%A1nchez-quir%C3%B3s-13bb3b189/).
 2019. Freemont, CA
