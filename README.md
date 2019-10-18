@@ -30,7 +30,7 @@ In this project we created a program called `fillit` wich allow you to take as a
 * Unix.
 * Group & interpersonal
 
-## Compilation:
+## Compilation ('fillit' directory):
 
 `make all` | First time compilation.
 
