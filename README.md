@@ -42,7 +42,7 @@ In this project we created a program called `fillit` wich allow you to take as a
 
 `./fillit 'source_file'` | Solve from a single file.
 
-## Authors:
+## Credits:
 
 `Vitruvian Men` | Emmanuel Diaz & [Luis Sanchez](https://www.linkedin.com/in/luis-sanchez-13bb3b189/).
 2019. Freemont, CA
